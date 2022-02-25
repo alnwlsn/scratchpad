@@ -74,7 +74,7 @@ dr.rectangle((0, 0, dimX, dimY), fill=(255, 255, 255))  # blank image
 drawLine(0, 0, 1, 0)  # go to home
 
 
-with open("testlogo.nc") as file:
+with open("out.nc") as file:
     lines = file.readlines()
 
 xgo = 0
@@ -112,4 +112,5 @@ for line in lines:
         else:  # laser is off
             drawLine(xgo, ygo, 2, 0)
 
-img.save("out.png")
+# img.save("out.png")
+img.show()
