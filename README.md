@@ -9,5 +9,10 @@ I really like topoR's ability to route with arcs in addition to just line segmen
 
 To get around this, I made this python script, which read in the exported .ses from topoR (with arcs) and converts them to a bunch of line segments (resolution adjustable) which KiCad can handle just fine.
 
-## laserg ##
+# laserg #
+scripts for my laser cutter
+## laserRender.py ##
 This is a quick hacky renderer for gcode that goes on my laser cutter (grbl). It will take a gcode file, and make an image of what would get cut.
+
+## rasterizer.py ##
+Thing for generating laser raster toolpaths from an image. I made this because I was not satisfied with the featureset of LaserGrbl or LaserWeb, and also because I can. 
