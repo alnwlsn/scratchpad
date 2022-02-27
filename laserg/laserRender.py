@@ -22,6 +22,9 @@ offColor = (0, 255, 0)  # g1 moves with laser off
 
 pixelsPerMM = 50
 
+laserMin = 0    #scaling for your gcode S parameter.
+laserMax = 4096
+
 # end settings
 
 dimX = (bedx+(bedborder*2))*pixelsPerMM
@@ -33,6 +36,8 @@ dr = ImageDraw.Draw(img)
 
 xl = 0
 yl = 0
+
+ps = lambda x: 0 if(x == 0) else int(255*((x-laserMin)/(laserMax-laserMin)))
 
 
 # draws a line from the last point to x,y with intensity intn(0-255).
@@ -108,7 +113,7 @@ for line in lines:
         drawLine(xgo, ygo, 1, 0)
     if(gen == 2):  # draw of some kind
         if(sgo > 0 and mstate == 1):  # laser is on
-            drawLine(xgo, ygo, 0, sgo)
+            drawLine(xgo, ygo, 0, ps(sgo))
         else:  # laser is off
             drawLine(xgo, ygo, 2, 0)
 
