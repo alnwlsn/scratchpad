@@ -78,10 +78,9 @@ for j in range(im2.size[1]):
                 whiteSkipCount = 0
             else:
                 if(pixel==0):
-                    whiteSkipCount += 1
-            
+                    whiteSkipCount += 1 
             # print(pixel)
-        f.write("G1 X{:.4f} S0\r\n".format(round(centerX+(wMM/2)+tailStop,4)))
+        f.write("G1 X{:.4f} S0\r\n".format(round(lastX+tailStop,4)))
 
     # if(j==5):
     #     break
