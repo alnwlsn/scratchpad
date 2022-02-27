@@ -3,10 +3,11 @@
 # Alnwlsn 2022-02-24
 
 linesPerMM = 2
-imageHeightMM = 30
+imageHeightMM = 30 #scale vertical size of image
 headStart = 5 #extra mm to go back at beginning of line to get a running start (overscan)
 tailStop = 2 #extra mm to go after
 
+#center of image - offet assuming the origin of the workspace is in the lower left corner; offset is up and to the right
 centerX = 50 #also in mm
 centerY = 35
 
@@ -15,7 +16,7 @@ from PIL import Image, ImageOps
 im = Image.open("in2.png")
 f = open("out.nc", mode="w", newline='')
 
-f.write("M3\r\n")
+f.write("M3\r\n") #turn on laser
 
 w,h = im.size
 aspect = w/h
