@@ -1,7 +1,7 @@
 #Alnwlsn 2021
 #converts arcs (qarc) in spectra files output from topoR to line segments, so that Kicad can use them
 
-inFilename = "z.ses" #input Spectra session file (output from TopoR)
+inFilename = "main.ses" #input Spectra session file (output from TopoR)
 outFilename = "out.ses" #output (modified) Spectra session file
 segmentsPerRadian = 15 #use this many segments for each radian of arc
 segmentsMinimum = 5 #use at least this many segments per arc
