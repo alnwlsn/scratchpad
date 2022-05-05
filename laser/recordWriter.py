@@ -15,11 +15,13 @@ data = (data-center) / (drange)  # map between -0.5 and 0.5
 
 # User Vars
 
-trackSpacing = 0.8
-trackMaxWidth = 0.3
-startDiam = 100
+trackSpacing = 0.6
+trackMaxWidth = 0.2
+startDiam = 120
 leadOutSpacing = 2
-leadOutRotations = 2
+leadOutRotations = 1
+leadInSpacing = 2
+leadInRotations = 1
 
 rpm = 78  # record rpm
 spindleUp = 5
@@ -38,19 +40,30 @@ y = []
 rotation = 0
 xp = 0
 yp = 0
+
+# leadin groove
+lRadius = radius
+lRoation = rotation
+for revs in range(int((leadInRotations*(2*pi))/radsample)+1):
+    rotation += radsample
+    xp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*cos(rotation)
+    yp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*sin(rotation)
+    x.append(xp)
+    y.append(yp)
+
+lRadius = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))
+lRoation = rotation
 for sample in data:
     rotation += radsample
     #print(sample, rotation)
-    xp = (sample*trackMaxWidth+radius -
-          (trackSpacing*(rotation/(2*pi))))*cos(rotation)
-    yp = (sample*trackMaxWidth+radius -
-          (trackSpacing*(rotation/(2*pi))))*sin(rotation)
+    xp = (sample*trackMaxWidth+lRadius - (trackSpacing*((rotation-lRoation)/(2*pi))))*cos(rotation)
+    yp = (sample*trackMaxWidth+lRadius - (trackSpacing*((rotation-lRoation)/(2*pi))))*sin(rotation)
     x.append(xp)
     y.append(yp)
 
 
 # extra rev (leadout groove)
-lRadius = (radius-(trackSpacing*(rotation/(2*pi))))
+lRadius = (sample*trackMaxWidth+lRadius - (trackSpacing*((rotation-lRoation)/(2*pi))))
 lRoation = rotation
 for revs in range(int((leadOutRotations*(2*pi))/radsample)+1):
     rotation += radsample
@@ -76,9 +89,9 @@ f.write("M3 S{:.4f}\r\n".format(spindleSpeed))  # turn on spindle
 f.write("G4 P"+str(spindleDelay)+"\r\n")  # wait for spindle
 f.write("G1 Z{:.4f} F{:.4f}\r\n".format(spindleDown, feedRate))  # go down
 for i in range(1, len(x)):
-    f.write("G1 X{:.4f} Y{:.4f}\r\n".format(x[i], y[i]))  #cut sample
-f.write("G0 Z{:.4f}\r\n".format(spindleUp)) #go up
-f.write("M5\r\n") #stop
+    f.write("G1 X{:.4f} Y{:.4f}\r\n".format(x[i], y[i]))  # cut sample
+f.write("G0 Z{:.4f}\r\n".format(spindleUp))  # go up
+f.write("M5\r\n")  # stop
 f.close()
 
 # plotting the points

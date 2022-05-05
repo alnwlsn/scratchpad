@@ -12,9 +12,9 @@
 from PIL import Image, ImageDraw, ImageOps
 
 # define bed shape. Origin is always in lower left corner, inset by bedborder
-bedx = 150  # units mm
-bedy = 150
-bedborder = 1  # extra space to draw around image, in mm
+bedx = 120  # units mm
+bedy = 120
+bedborder = 5  # extra space to draw around image, in mm
 linewidthMM = 0.2
 
 linewidthMoveMM = 0.05  # line size for moves
@@ -22,7 +22,7 @@ linewidthMoveMM = 0.05  # line size for moves
 rapidColor = (255, 0, 0)  # g0 moves
 offColor = (0, 255, 0)  # g1 moves with laser off
 
-pixelsPerMM = 20
+pixelsPerMM = 50
 
 laserMin = 0  # scaling for your gcode S parameter.
 laserMax = 255
