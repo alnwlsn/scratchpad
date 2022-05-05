@@ -15,8 +15,8 @@ data = (data-center) / (drange)  # map between -0.5 and 0.5
 
 # User Vars
 
-trackSpacing = 1
-trackMaxWidth = 0.5
+trackSpacing = 0.8
+trackMaxWidth = 0.3
 startDiam = 100
 leadOutSpacing = 2
 leadOutRotations = 2
@@ -72,7 +72,7 @@ for revs in range(int((3*pi)/radsample)+1):
 f = open("record.nc", mode="w", newline='')
 f.write("G0 Z{:.4f}\r\n".format(spindleUp))
 f.write("G0 X{:.4f} Y{:.4f} S0\r\n".format(x[0], y[0]))  # go to start
-f.write("M3\r\n")  # turn on spindle
+f.write("M3 S{:.4f}\r\n".format(spindleSpeed))  # turn on spindle
 f.write("G4 P"+str(spindleDelay)+"\r\n")  # wait for spindle
 f.write("G1 Z{:.4f} F{:.4f}\r\n".format(spindleDown, feedRate))  # go down
 for i in range(1, len(x)):
