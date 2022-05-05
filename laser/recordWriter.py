@@ -18,6 +18,8 @@ data = (data-center) / (drange)  # map between -0.5 and 0.5
 trackSpacing = 1
 trackMaxWidth = 0.5
 startDiam = 100
+leadOutSpacing = 2
+leadOutRotations = 2
 
 rpm = 78  # record rpm
 spindleUp = 5
@@ -25,6 +27,7 @@ spindleDown = 0
 spindleSpeed = 10000
 spindleDelay = 5
 feedRate = 50
+
 
 ###################
 
@@ -47,21 +50,21 @@ for sample in data:
 
 
 # extra rev (leadout groove)
-for revs in range(int((2*pi)/radsample)+1):
+lRadius = (radius-(trackSpacing*(rotation/(2*pi))))
+lRoation = rotation
+for revs in range(int((leadOutRotations*(2*pi))/radsample)+1):
     rotation += radsample
-    xp = (radius-(trackSpacing*(rotation/(2*pi))))*cos(rotation)
-    yp = (radius-(trackSpacing*(rotation/(2*pi))))*sin(rotation)
+    xp = (lRadius-(leadOutSpacing*((rotation-lRoation)/(2*pi))))*cos(rotation)
+    yp = (lRadius-(leadOutSpacing*((rotation-lRoation)/(2*pi))))*sin(rotation)
     x.append(xp)
     y.append(yp)
 
 # #stop groove
-lRoation = rotation
+lRadius = (lRadius-(leadOutSpacing*((rotation-lRoation)/(2*pi))))
 for revs in range(int((3*pi)/radsample)+1):
     rotation += radsample
-    xp = (sample*trackMaxWidth+radius -
-          (trackSpacing*(lRoation/(2*pi))))*cos(rotation)
-    yp = (sample*trackMaxWidth+radius -
-          (trackSpacing*(lRoation/(2*pi))))*sin(rotation)
+    xp = lRadius*cos(rotation)
+    yp = lRadius*sin(rotation)
     x.append(xp)
     y.append(yp)
 
