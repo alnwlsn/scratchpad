@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageOps
 bedx = 120  # units mm
 bedy = 120
 bedborder = 5  # extra space to draw around image, in mm
-linewidthMM = 0.2
+linewidthMM = 0.3
 
 linewidthMoveMM = 0.05  # line size for moves
 

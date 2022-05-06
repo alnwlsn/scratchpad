@@ -15,9 +15,9 @@ data = (data-center) / (drange)  # map between -0.5 and 0.5
 
 # User Vars
 
-trackSpacing = 0.6
-trackMaxWidth = 0.2
-startDiam = 120
+trackSpacing = 0.8
+trackMaxWidth = 0.4
+startDiam = 160
 leadOutSpacing = 2
 leadOutRotations = 1
 leadInSpacing = 2
