@@ -40,10 +40,10 @@ y = []
 rotation = 0
 xp = 0
 yp = 0
-
-# leadin groove
 lRadius = radius
 lRoation = rotation
+
+# leadin groove
 for revs in range(int((leadInRotations*(2*pi))/radsample)+1):
     rotation += radsample
     xp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*cos(rotation)

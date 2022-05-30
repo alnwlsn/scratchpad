@@ -12,8 +12,8 @@
 from PIL import Image, ImageDraw, ImageOps
 
 # define bed shape. Origin is always in lower left corner, inset by bedborder
-bedx = 120  # units mm
-bedy = 120
+bedx = 150  # units mm
+bedy = 150
 bedborder = 5  # extra space to draw around image, in mm
 linewidthMM = 0.3
 
