@@ -43,13 +43,13 @@ yp = 0
 lRadius = radius
 lRoation = rotation
 
-# # leadin groove
-# for revs in range(int((leadInRotations*(2*pi))/radsample)+1):
-#     rotation += radsample
-#     xp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*cos(rotation)
-#     yp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*sin(rotation)
-#     x.append(xp)
-#     y.append(yp)
+# leadin groove
+for revs in range(int((leadInRotations*(2*pi))/radsample)+1):
+    rotation += radsample
+    xp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*cos(rotation)
+    yp = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))*sin(rotation)
+    x.append(xp)
+    y.append(yp)
 
 lRadius = (lRadius-(leadInSpacing*((rotation-lRoation)/(2*pi))))
 lRoation = rotation
@@ -94,22 +94,10 @@ f.write("G0 Z{:.4f}\r\n".format(spindleUp))  # go up
 f.write("M5\r\n")  # stop
 f.close()
 
-#ploting lots of graphs to make an animation
-
-fulx = x
-fuly = y
-endp = 0
-
-x = fulx[0]
-y = fuly[0]
-
-
 fig = plt.figure()
 fig.patch.set_facecolor('black')
 # plotting the points
 
-# ax.spines['right'].set_linewidth(3)
-# ax.spines['left'].set_lw(3)
 fig.set_size_inches(4*3, 3*3)
 ax = plt.gca()
 linedata, = ax.plot(x, y)
@@ -121,30 +109,8 @@ ax.spines['right'].set_color('white')
 ax.spines['left'].set_color('white')
 ax.xaxis.label.set_color('white')
 ax.yaxis.label.set_color('white')
-ax.get_title
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.tick_params(colors='white', which='both')  # 'both' refers to minor and major axes
-
-# plt.show()
-
-while True:
-    print(endp)
-    x = fulx[0:endp]
-    y = fuly[0:endp]
-    linedata.set_xdata(x)
-    linedata.set_ydata(y)
-    plt.axis('equal')
-    plt.title('sample '+'{:d}'.format(endp), color='white')
-    ax.relim() # recompute the ax.dataLim
-    ax.autoscale_view() # update ax.viewLim using the new dataLim
-    # fs = 5
-    # for j in range(0,fs):
-    #     plt.savefig('images/'+'{:06d}-{:03d}'.format(endp,j)+'.png', dpi=100)
-
-    # linedata.set_marker(".")
-    endp += 1
-    # if(endp>=20):
-    #     break;
-    if(endp>=len(fulx)):
-        break;
+plt.title('The whole thing', color='white')
+plt.savefig('images/record-matplot.png', dpi=100)
