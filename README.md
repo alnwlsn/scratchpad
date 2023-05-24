@@ -26,4 +26,6 @@ todo - add "burn white" or otherwise turn off the G0 white skip function
 ## laserRender.py ##
 I needed a preview output for the gcode that the rasterizer program produces, so I could see what I was doing. Pretty uncomplicated, just reads a gcode file and draws on a blank image the Gcode moves as a laser would. Black/grey traces go where the laser would burn (at power), green lines are where there is a G1 move, but at S0 (otherwise it would draw a white line and possibly overwrite something), and red lines for G0 rapid moves.
 
+## chatgpt.py ##
+This is a simple interface to use chatGPT from a terminal. It doesn't use the API, instead, it uses Selenium and drives a chromium browser with the chat.openai.com site open, with you already logged in. Probably of little use to most people, but who knows. You'll need chromium, chromedriver, python and selenium.
 
