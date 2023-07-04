@@ -60,7 +60,7 @@ def select_chat(chatnumber):
 
 def del_chat():  # delete current chat
     button = driver.find_elements(
-        By.XPATH, '//button[contains(@class, "p-1 hover:text-white")]')[1]  # this is trash can
+        By.XPATH, '//button[contains(@class, "p-1 hover:text-white")]')[2]  # this is trash can
     button.click()
     time.sleep(1.5)
     button = driver.find_elements(
@@ -84,7 +84,7 @@ open_chats = None
 
 while True:
     try:
-        inputT = input(">")
+        inputT = input(":")
         if inputT.lower() in ['exit', 'quit', 'stop', 'q', 'x']:
             print("exit")
             quit()
@@ -113,7 +113,7 @@ while True:
                 textarea.send_keys(inputT)
                 time.sleep(0.5)
                 textarea.send_keys(Keys.RETURN)
-                print("thinking...")
+                #print("-",end='')
             else:
                 print("last response:")
                 waittime = 3
