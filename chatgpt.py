@@ -13,6 +13,8 @@ from selenium.webdriver.support import expected_conditions
 import time
 import textwrap
 
+output=""
+outputStat=""
 
 def word_wrap(text, width=80):
     paragraphs = text.split('\n')
@@ -88,13 +90,16 @@ while True:
         if inputT.lower() in ['exit', 'quit', 'stop', 'q', 'x']:
             print("exit")
             quit()
-
         waited = True
         if inputT.lower() in ['new', 'n']:
             new_chat_link = driver.find_element(
                 By.XPATH, "//a[contains(text(), 'New chat')]")
             new_chat_link.click()
             print("new chat")
+        elif inputT.lower() in ['print', 'show', 'p']:
+            print(output)
+        elif inputT.lower() in ['info', 'list', 'l']:
+            print(outputStat)
         elif inputT.lower() in ['old', 'open', 'o']:
             get_chats(True)
         elif inputT.lower() in ['del', 'delete', 'rm']:
@@ -104,7 +109,7 @@ while True:
         elif all(char.isdigit() for char in inputT):
             select_chat(inputT)
         elif inputT.lower() in ['?', 'h', 'help']:
-            print("commands:\n n - new chat\n o - list current chats\n (number of chat) - select existing chat\n r - recall last response\n del - delete current chat\n f - refresh browser\n q - exit\n anything else - send to ChatGPT")
+            print("commands:\n n - new chat\n p - print current output\n l - show response size and # lines\n o - list current chats\n (number of chat) - select existing chat\n r - reload current response\n del - delete current chat\n f - refresh browser\n q - exit\n anything else - send to ChatGPT")
         else:
             waittime = 60
             if inputT.lower() not in ['refresh', 'ref', 'ans', 'a', 'r']:
@@ -115,7 +120,6 @@ while True:
                 textarea.send_keys(Keys.RETURN)
                 #print("-",end='')
             else:
-                print("last response:")
                 waittime = 3
 
             wait = WebDriverWait(driver, waittime)
@@ -144,10 +148,11 @@ while True:
                     else:
                         text2 += '?'
                 text2 = text2.expandtabs(4)
-                text2 = f'({len(text2)} chars) ' + text2
-                text2 = word_wrap(text2, width=80)
+                output = word_wrap(text2, width=80)
+                outputStat = "{} {}".format(len(output), output.count('\n'))
+                print(outputStat)
 
-                print(text2)
+
     except Exception as e:
         # print(f"An exception occurred: {e}")
         print("error")
