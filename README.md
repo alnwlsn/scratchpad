@@ -1,7 +1,3 @@
-# pcbScripts
-Scripts that I use to help design circuit boards (in KiCad)
-
-
 ## spectraArcs2Lines.py
 I gave the topoR autorouter a try for my latest project for routing my traces, after designing the rest of my board in KiCad. To do this, you export a Spectra DSN file from KiCad, which you then import in topoR, do the autorouting, and then export a Spectra SES (session) file back to KiCad to put in all the traces.
 
@@ -29,3 +25,5 @@ I needed a preview output for the gcode that the rasterizer program produces, so
 ## chatgpt.py ##
 This is a simple interface to use chatGPT from a terminal. It doesn't use the API, instead, it uses Selenium and drives a chromium browser with the chat.openai.com site open, with you already logged in. Probably of little use to most people, but who knows. You'll need chromium, chromedriver, python and selenium.
 
+## ttylynx ##
+Bash script that forms a rudimentary command line interface to read and navigate web pages from a command line interface which has no cursor control. Optimized for a hard copy teletype, like my converted Selectric II, where printing things takes a long time. Uses lynx to render web pages, and wget / jp2a to view JPG images as ascii art. Works a bit like the original CERN LineModeBrowser
