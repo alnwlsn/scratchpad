@@ -1,0 +1,132 @@
+#!/bin/bash
+#bash wrapper for operating lynx web browser from a hard copy teletype
+#also uses wget and jp2a to make ascii art from any jpg images
+#alnwlsn 2023
+
+if [[ $# -lt 1 ]]; then
+    echo "give URL"
+    exit 1
+fi
+vhist=() #stores visited history, so we can go back
+url="$1"
+current_url=""
+page_content=""
+page_size=""
+page_lines=""
+links_range=""
+references=""
+last_linknumber=0
+url_map=() # Array to store URLs corresponding to numbers
+visit() {
+    vhist+=("$1")
+}
+vback() { #go back to last page
+    # remove current page
+    if [[ ${#vhist[@]} -eq 1 ]]; then
+        #echo "at beginning"
+        return 1
+    fi
+    local last_index=$(( ${#vhist[@]} - 1 ))
+    unset "vhist[$last_index]"
+
+    #get last page, then remove it (will be added again when we visit the page in a sec)
+    if [[ ${#vhist[@]} -eq 0 ]]; then
+        #echo "at beginning"
+        return 1
+    fi
+    local last_index=$(( ${#vhist[@]} - 1 ))
+    url="${vhist[last_index]}"
+    unset "vhist[$last_index]"
+    web_update
+    echo "$page_size" "$page_lines" "$links_range"
+}
+
+web_update(){
+    current_url=$url
+    if [[ "${url,,}" == *.jpg ]]; then
+        #URL is a JPG image. Show ASCII art
+        output=$(wget -q "$url" -O- | jp2a --width=60 -)
+        visit "$url"
+        page_content=$(echo "$output")
+        references=""
+        links_range="(jpg)"
+    else
+        output=$(lynx -dump "$url")
+        visit "$url"
+        # Trim the "References" section from output
+        page_content=$(echo "$output" | sed -e '/^References$/,$d')
+        #change non-ascii to ?
+        page_content=$(echo "$page_content" | LC_ALL=C sed 's/[\x80-\xFF]/?/g')
+        # Store the references separately
+        references=$(echo "$output" | sed -n -e '/^References$/,$p')
+        # Find the greatest number in the references list
+        greatest_number=0
+        url_map=() # Array to store URLs corresponding to numbers
+        while IFS= read -r line; do
+            number=$(echo "$line" | awk -F '.' '{print $1}') #get the number from the field
+            number=$(echo "$number" | grep -oE '[0-9]+')
+            if [ -n "$number" ]; then #make sure it is a number
+                if [[ $number -gt $greatest_number ]]; then
+                    greatest_number=$number
+                fi
+                url=$(echo "$line" | grep -oE '[^[:space:]]*://\S+') #add link to table
+                url_map[$number]=$url
+            fi
+        done <<< "$references"
+
+        if [[ $greatest_number -gt 0 ]]; then
+            links_range="(1-$greatest_number)"
+        else
+            links_range=""
+        fi
+    fi
+    page_lines=$(echo -n "$page_content" | grep -c '^')
+    page_size=${#page_content}
+}
+web_update
+echo "$page_size" "$page_lines" "$links_range"
+while true; do
+    read -p ":" input
+    if [[ "$input" == "q" ]]; then
+        break
+    elif [[ "$input" == "p" ]]; then
+        echo "$page_content"
+    elif [[ "$input" == "r" ]]; then
+        echo "$references"
+    elif [[ "$input" == "l" ]]; then
+        echo "$page_size" "$page_lines" "$links_range"
+    elif [[ "$input" == "u" ]]; then
+        echo "$current_url"
+    elif [[ "$input" == "b" ]]; then
+        vback
+    elif [[ "$input" == "h" ]]; then
+        for value in "${vhist[@]}"
+        do
+          echo $value
+        done
+    elif [[ "$input" =~ ^([0-9]+)-([0-9]+)$ ]]; then
+        start=${BASH_REMATCH[1]}
+        endd=${BASH_REMATCH[2]}
+        lenn=$(expr "$start" - "$endd")
+        echo "$page_content" | head -n "$endd" | tail -n "$lenn"
+    elif [[ "$input" =~ ^[0-9]+$ ]]; then
+        if (( input >= 1 && input <= greatest_number )); then
+            url="${url_map[$input]}"
+            web_update
+            echo "$page_size" "$page_lines" "$links_range"
+        else
+            echo "$links_range"
+        fi
+    elif [[ "$input" == "?" ]]; then
+        echo "Commands:"
+        echo "p - print page output"
+        echo "(numberA)-(numberB) - print lines of page output between A and B"
+        echo "r - print references section"
+        echo "l - print page size, number of lines, and range of links "
+        echo "u - print current URL"
+        echo "(number) - follow link"
+        echo "b - go back one link"
+        echo "h - show traversal history"
+        echo "q - quit"
+    fi
+done
