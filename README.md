@@ -1,3 +1,6 @@
+# scratchpad #
+Files and small projects which are too tiny to have their own repo.
+
 ## spectraArcs2Lines.py
 I gave the topoR autorouter a try for my latest project for routing my traces, after designing the rest of my board in KiCad. To do this, you export a Spectra DSN file from KiCad, which you then import in topoR, do the autorouting, and then export a Spectra SES (session) file back to KiCad to put in all the traces.
 
@@ -27,3 +30,6 @@ This is a simple interface to use chatGPT from a terminal. It doesn't use the AP
 
 ## ttylynx ##
 Bash script that forms a rudimentary command line interface to read and navigate web pages from a command line interface which has no cursor control. Optimized for a hard copy teletype, [like my converted Selectric II](https://www.youtube.com/watch?v=1kXnsvYfaF4), where printing things takes a long time. Uses lynx to render web pages, and wget / jp2a to view JPG images as ascii art. Works a bit like the original CERN LineModeBrowser
+
+## trs804kb ##
+This is a backlate for @jaycrutti's TRS-80 Model 4 keyboard [replacement](https://www.jaycrutti.com/hardware-projects/tandy-trs-80-model-4-replacement-keyboard) using modern mechanical keyswitches.
