@@ -33,3 +33,6 @@ Bash script that forms a rudimentary command line interface to read and navigate
 
 ## trs804kb ##
 This is a backlate for @jaycrutti's TRS-80 Model 4 keyboard [replacement](https://www.jaycrutti.com/hardware-projects/tandy-trs-80-model-4-replacement-keyboard) using modern mechanical keyswitches.
+
+## trs804p-gotek ##
+This is a 3D printed faceplate and sled to put a Gotek floppy emulator inside the modem compartment of a TRS-80 model 4P. Uses one of those "0.91 inch 128x32" OLED i2c displays for more info. [FlashFloppy](https://github.com/keirf/flashfloppy) is my Gotek firmware of choice.
